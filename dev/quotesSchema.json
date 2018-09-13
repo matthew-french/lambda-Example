@@ -1,0 +1,31 @@
+{
+    "TableName": "quotes",
+    "KeySchema": [
+        {
+            "AttributeName": "uuid",
+            "KeyType": "HASH"
+        },
+        {
+            "AttributeName": "language_category",
+            "KeyType": "RANGE"
+        }
+    ],
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "uuid",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "language_category",
+            "AttributeType": "S"
+        }
+    ],
+    "ProvisionedThroughput": {
+        "ReadCapacityUnits": 5,
+        "WriteCapacityUnits": 25
+    },
+    "StreamSpecification": {
+        "StreamEnabled": true,
+        "StreamViewType": "NEW_IMAGE"
+    }
+}

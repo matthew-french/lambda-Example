@@ -1,0 +1,86 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Populate ES with Dynamodb content
+Resources:
+  ContentSearchLambda:
+    DependsOn: ContentSearchPolicy
+    Properties:
+      CodeUri: s3://lambdas.palringo.aws/8f7046a6b98e151d0ae08983e3527d0b
+      Description: Populate elastic search
+      FunctionName: content-search-lambda
+      Handler: app/index.handler
+      MemorySize: 128
+      Role:
+        Fn::GetAtt:
+        - ContentSearchRole
+        - Arn
+      Runtime: nodejs8.10
+      Timeout: 60
+      VpcConfig:
+        SecurityGroupIds:
+        - sg-0a7eaa6d
+        SubnetIds:
+        - subnet-2dbb7575
+        - subnet-06f12d62
+        - subnet-9abd02ec
+    Type: AWS::Serverless::Function
+  ContentSearchPolicy:
+    DependsOn: ContentSearchRole
+    Properties:
+      PolicyDocument:
+        Statement:
+        - Action:
+          - ec2:CreateNetworkInterface
+          - ec2:DescribeNetworkInterfaces
+          - ec2:DeleteNetworkInterface
+          Effect: Allow
+          Resource:
+          - '*'
+        - Action:
+          - dynamodb:DescribeTable
+          - dynamodb:Scan
+          Effect: Allow
+          Resource: arn:aws:dynamodb:eu-west-1:677619093471:table/quotes
+        - Action: es:ESHttpPost
+          Effect: Allow
+          Resource: arn:aws:es:eu-west-1:677619093471:domain/content-search/*
+        - Action:
+          - dynamodb:GetShardIterator
+          - dynamodb:DescribeStream
+          - dynamodb:GetRecords
+          - dynamodb:ListStreams
+          Effect: Allow
+          Resource: arn:aws:dynamodb:eu-west-1:677619093471:table/quotes/stream/2018-09-04T15:11:20.725
+        - Action:
+          - logs:*
+          Effect: Allow
+          Resource:
+          - arn:aws:logs:*:log-group:/aws/lambda/*:*
+        Version: '2012-10-17'
+      PolicyName: content-search-policy
+      Roles:
+      - Ref: ContentSearchRole
+    Type: AWS::IAM::Policy
+  ContentSearchRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+        Version: '2012-10-17'
+    Type: AWS::IAM::Role
+  ContentSearchStream:
+    Properties:
+      BatchSize: 100
+      Enabled: true
+      EventSourceArn: arn:aws:dynamodb:eu-west-1:677619093471:table/quotes/stream/2018-09-04T15:11:20.725
+      FunctionName:
+        Fn::GetAtt:
+        - ContentSearchLambda
+        - Arn
+      StartingPosition: TRIM_HORIZON
+    Type: AWS::Lambda::EventSourceMapping
+Transform: AWS::Serverless-2016-10-31

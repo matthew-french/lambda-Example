@@ -1,0 +1,105 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: Populate ES with Dynamodb content
+Resources:
+  ContentSearchPolicy:
+    Type: AWS::IAM::Policy
+    DependsOn: ContentSearchRole
+    Properties:
+      Roles:
+        - Ref: ContentSearchRole
+      PolicyName: content-search-policy
+      PolicyDocument:
+        {
+          "Version": "2012-10-17",
+            "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ec2:CreateNetworkInterface",
+                    "ec2:DescribeNetworkInterfaces",
+                    "ec2:DeleteNetworkInterface",
+                  ],
+                  "Resource": [
+                    "*"
+                  ]
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "dynamodb:DescribeTable",
+                        "dynamodb:Scan"
+                    ],
+                    "Resource": "arn:aws:dynamodb:eu-west-1:677619093471:table/quotes"
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": "es:ESHttpPost",
+                    "Resource": "arn:aws:es:eu-west-1:677619093471:domain/content-search/*"
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "dynamodb:GetShardIterator",
+                        "dynamodb:DescribeStream",
+                        "dynamodb:GetRecords",
+                        "dynamodb:ListStreams"
+                    ],
+                    "Resource": "arn:aws:dynamodb:eu-west-1:677619093471:table/quotes/stream/2018-09-04T15:11:20.725"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                      "logs:*"
+                  ],
+                  "Resource": [
+                      "arn:aws:logs:*:log-group:/aws/lambda/*:*"
+                  ]
+                }
+            ]
+        }
+  ContentSearchRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          -
+            Effect: Allow
+            Principal:
+              Service:
+                - 'lambda.amazonaws.com'
+            Action:
+              - 'sts:AssumeRole'
+  ContentSearchLambda:
+    Type: AWS::Serverless::Function
+    DependsOn: ContentSearchPolicy
+    Properties:
+      Handler: app/index.handler
+      Runtime: nodejs8.10
+      Role: 
+        Fn::GetAtt:
+          - ContentSearchRole
+          - Arn
+      FunctionName: content-search-lambda
+      Description: Populate elastic search
+      MemorySize: 128
+      Timeout: 60
+      VpcConfig: # include if needed for production, otherwise delete
+        SecurityGroupIds:
+          - sg-0a7eaa6d
+        SubnetIds:
+          - subnet-2dbb7575
+          - subnet-06f12d62
+          - subnet-9abd02ec
+  ContentSearchStream:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      BatchSize: 100
+      Enabled: true
+      EventSourceArn: "arn:aws:dynamodb:eu-west-1:677619093471:table/quotes/stream/2018-09-04T15:11:20.725"
+      FunctionName: 
+        Fn::GetAtt:
+          - ContentSearchLambda
+          - Arn
+      StartingPosition: "TRIM_HORIZON"

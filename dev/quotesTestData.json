@@ -1,0 +1,212 @@
+{
+    "Records": [
+        {
+            "eventID": "event1",
+            "eventName": "INSERT",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "eu-west-1",
+            "dynamodb": {
+                "ApproximateCreationDateTime": 1534495200,
+                "Keys": {
+                    "language_category": {
+                        "S": "en_test"
+                    },
+                    "uuid": {
+                        "S": "1"
+                    }
+                },
+                "NewImage": {
+                    "quote": {
+                        "S": "This is a test phrase: 1"
+                    },
+                    "category_id": {
+                        "S": "7"
+                    },
+                    "language": {
+                        "S": "en"
+                    },
+                    "category": {
+                        "S": "test"
+                    },
+                    "language_category": {
+                        "S": "en_test"
+                    },
+                    "last_modified": {
+                        "S": "2018-08-17T09:40:01.760+01:00"
+                    },
+                    "uuid": {
+                        "S": "1"
+                    }
+                },
+                "SequenceNumber": "13725100000000026582153692",
+                "SizeBytes": 268,
+                "StreamViewType": "NEW_IMAGE"
+            },
+            "eventSourceARN": "arn:aws:dynamodb:eu-west-1:677619093471:table/quotes/stream/2018-08-15T08:31:08.723"
+        },
+        {
+            "eventID": "event2",
+            "eventName": "INSERT",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "eu-west-1",
+            "dynamodb": {
+                "ApproximateCreationDateTime": 1534495200,
+                "Keys": {
+                    "language_category": {
+                        "S": "en_test"
+                    },
+                    "uuid": {
+                        "S": "2"
+                    }
+                },
+                "NewImage": {
+                    "quote": {
+                        "S": "This is a test phrase: 2"
+                    },
+                    "category_id": {
+                        "S": "7"
+                    },
+                    "language": {
+                        "S": "en"
+                    },
+                    "category": {
+                        "S": "test"
+                    },
+                    "language_category": {
+                        "S": "en_test"
+                    },
+                    "last_modified": {
+                        "S": "2018-08-17T09:40:01.760+01:00"
+                    },
+                    "uuid": {
+                        "S": "2"
+                    }
+                },
+                "SequenceNumber": "13725100000000026582153692",
+                "SizeBytes": 268,
+                "StreamViewType": "NEW_IMAGE"
+            },
+            "eventSourceARN": "arn:aws:dynamodb:eu-west-1:677619093471:table/quotes/stream/2018-08-15T08:31:08.723"
+        },
+        {
+            "eventID": "event3",
+            "eventName": "INSERT",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "eu-west-1",
+            "dynamodb": {
+                "ApproximateCreationDateTime": 1534495200,
+                "Keys": {
+                    "language_category": {
+                        "S": "en_test"
+                    },
+                    "uuid": {
+                        "S": "3"
+                    }
+                },
+                "NewImage": {
+                    "quote": {
+                        "S": "This is a test phrase: 3"
+                    },
+                    "category_id": {
+                        "S": "7"
+                    },
+                    "language": {
+                        "S": "en"
+                    },
+                    "category": {
+                        "S": "test"
+                    },
+                    "language_category": {
+                        "S": "en_test"
+                    },
+                    "last_modified": {
+                        "S": "2018-08-17T09:40:01.760+01:00"
+                    },
+                    "uuid": {
+                        "S": "3"
+                    }
+                },
+                "SequenceNumber": "13725100000000026582153692",
+                "SizeBytes": 268,
+                "StreamViewType": "NEW_IMAGE"
+            },
+            "eventSourceARN": "arn:aws:dynamodb:eu-west-1:677619093471:table/quotes/stream/2018-08-15T08:31:08.723"
+        },
+        {
+            "eventID": "event4",
+            "eventName": "MODIFY",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "eu-west-1",
+            "dynamodb": {
+                "ApproximateCreationDateTime": 1535967600,
+                "Keys": {
+                    "language_category": {
+                        "S": "en_sayings_and_quotes"
+                    },
+                    "uuid": {
+                        "S": "4"
+                    }
+                },
+                "NewImage": {
+                    "quote": {
+                        "S": "Early to bed and early to rise, makes a man healthy, wealthy and wise.."
+                    },
+                    "category_id": {
+                        "N": "0"
+                    },
+                    "language": {
+                        "S": "en"
+                    },
+                    "id": {
+                        "N": "46"
+                    },
+                    "category": {
+                        "S": "Sayings and Quotes"
+                    },
+                    "language_category": {
+                        "S": "en_sayings_and_quotes"
+                    },
+                    "last_modified": {
+                        "S": "2018-08-14T14:12:16.647+01:00"
+                    },
+                    "uuid": {
+                        "S": "4"
+                    },
+                    "game_id": {
+                        "N": "40"
+                    }
+                },
+                "SequenceNumber": "94879500000000026563837311",
+                "SizeBytes": 335,
+                "StreamViewType": "NEW_IMAGE"
+            },
+            "eventSourceARN": "arn:aws:dynamodb:eu-west-1:677619093471:table/quotes/stream/2018-08-15T08:31:08.723"
+        },
+        {
+            "eventID": "event5",
+            "eventName": "REMOVE",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "eu-west-1",
+            "dynamodb": {
+                "ApproximateCreationDateTime": 1535967720,
+                "Keys": {
+                    "language_category": {
+                        "S": "en_sayings_and_quotes"
+                    },
+                    "uuid": {
+                        "S": "5"
+                    }
+                },
+                "SequenceNumber": "94879600000000026564020821",
+                "SizeBytes": 78,
+                "StreamViewType": "NEW_IMAGE"
+            },
+            "eventSourceARN": "arn:aws:dynamodb:eu-west-1:677619093471:table/quotes/stream/2018-08-15T08:31:08.723"
+        }
+    ]
+}
